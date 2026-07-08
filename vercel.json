@@ -1,0 +1,18 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/api/whatsapp", "destination": "/api/whatsapp.js" },
+    { "source": "/assets/:path*", "destination": "/site/assets/:path*" },
+    { "source": "/favicon.svg", "destination": "/site/favicon.svg" },
+    { "source": "/site.webmanifest", "destination": "/site/site.webmanifest" },
+    { "source": "/robots.txt", "destination": "/site/robots.txt" },
+    { "source": "/sitemap.xml", "destination": "/site/sitemap.xml" },
+    { "source": "/styles.css", "destination": "/site/styles.css" },
+    { "source": "/privacy", "destination": "/site/privacy.html" },
+    { "source": "/terms", "destination": "/site/terms.html" },
+    { "source": "/thank-you", "destination": "/site/thank-you.html" },
+    { "source": "/404", "destination": "/site/404.html" },
+    { "source": "/", "destination": "/site/index.html" }
+  ]
+}
