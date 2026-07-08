@@ -1,0 +1,12 @@
+{
+  "name": "booklaxdriver",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BookLaxDriver luxury Los Angeles chauffeur website with WhatsApp lead capture and webhook starter.",
+  "scripts": {
+    "start": "vercel dev"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
