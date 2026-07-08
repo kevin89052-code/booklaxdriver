@@ -1,0 +1,948 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>BookLAXDriver | LAX 私人司机预约平台</title>
+  <style>
+    :root {
+      --bg: #f4f6fa;
+      --ink: #111827;
+      --muted: #667085;
+      --panel: #ffffff;
+      --line: #d9dee8;
+      --dark: #0b1220;
+      --blue: #0b5cab;
+      --blue-dark: #084579;
+      --gold: #a87922;
+      --ok: #087443;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      line-height: 1.5;
+    }
+
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 0 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: var(--dark);
+      color: #fff;
+    }
+
+    .hero {
+      min-height: 570px;
+      border-radius: 8px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 420px;
+      background:
+        linear-gradient(90deg, rgba(11, 18, 32, 0.96), rgba(11, 18, 32, 0.72)),
+        url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1800&q=80") center / cover;
+      color: #fff;
+    }
+
+    .hero-copy {
+      padding: 58px;
+      align-self: center;
+    }
+
+    .tag {
+      display: inline-flex;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: rgba(255, 255, 255, 0.09);
+      font-weight: 800;
+    }
+
+    h1 {
+      max-width: 720px;
+      margin: 18px 0 16px;
+      font-size: 48px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .hero-copy p {
+      max-width: 670px;
+      color: #e6edf7;
+      font-size: 18px;
+      margin: 0 0 24px;
+    }
+
+    .hero-panel {
+      margin: 24px;
+      padding: 22px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--ink);
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 8px;
+      min-height: 48px;
+      padding: 13px 16px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue);
+      color: #fff;
+      font: inherit;
+      font-weight: 900;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn:hover { background: var(--blue-dark); }
+    .btn.gold { background: var(--gold); }
+    .btn.light { background: #fff; color: var(--ink); }
+    .btn.gray { background: #eef2f7; color: var(--ink); }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .stat {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .stat strong { display: block; font-size: 20px; }
+    .stat span { color: #d6deeb; font-size: 13px; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin: 22px 0;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(16, 24, 40, 0.07);
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 17px;
+    }
+
+    .card span,
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .nav-links a {
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .site-section {
+      margin: 30px 0;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .section-head p {
+      max-width: 600px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .service-grid,
+    .fleet-grid,
+    .steps,
+    .faq-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .service-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .fleet-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .fleet-photo {
+      height: 168px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #111827, #263241);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fleet-photo::before {
+      content: "";
+      position: absolute;
+      left: 9%;
+      right: 9%;
+      bottom: 38px;
+      height: 58px;
+      border-radius: 28px 32px 10px 10px;
+      background: #05070b;
+      box-shadow: 0 18px 0 #06080c;
+    }
+
+    .fleet-photo::after {
+      content: "";
+      position: absolute;
+      left: 18%;
+      right: 18%;
+      bottom: 80px;
+      height: 34px;
+      border-radius: 20px 20px 6px 6px;
+      background: #d6e6f7;
+      opacity: 0.9;
+    }
+
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      counter-reset: step;
+    }
+
+    .step {
+      position: relative;
+      padding-top: 52px;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: var(--dark);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .dark-panel {
+      border-radius: 8px;
+      padding: 24px;
+      background: var(--dark);
+      color: #fff;
+    }
+
+    .dark-panel p,
+    .dark-panel li {
+      color: #d8e0ec;
+    }
+
+    .dark-panel ul {
+      padding-left: 19px;
+      margin-bottom: 0;
+    }
+
+    .faq-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .booking {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .section-title {
+      margin: 30px 0 14px;
+      font-size: 26px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .field { margin-bottom: 14px; }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      color: #263241;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #cfd6e1;
+      border-radius: 8px;
+      padding: 12px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(11, 92, 171, 0.13);
+    }
+
+    .vehicle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .vehicle {
+      border: 1px solid #cfd6e1;
+      border-radius: 8px;
+      padding: 14px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .vehicle input {
+      width: auto;
+      margin-right: 7px;
+    }
+
+    .vehicle span,
+    .vehicle strong {
+      display: block;
+    }
+
+    .vehicle span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .vehicle:has(input:checked) {
+      border-color: var(--blue);
+      background: #edf6ff;
+    }
+
+    .summary {
+      position: sticky;
+      top: 16px;
+    }
+
+    .price {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e5eaf1;
+      margin-bottom: 8px;
+    }
+
+    .price strong {
+      font-size: 38px;
+      line-height: 1;
+    }
+
+    .badge {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: #e9f7ef;
+      color: var(--ok);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #eef1f5;
+      padding: 10px 0;
+    }
+
+    .row span:first-child { color: var(--muted); }
+    .row span:last-child { text-align: right; font-weight: 900; }
+
+    .actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .check {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 12px 0;
+      font-weight: 800;
+    }
+
+    .check input {
+      width: auto;
+      margin-top: 4px;
+    }
+
+    .policy {
+      border-left: 4px solid var(--gold);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fff8ea;
+      color: #4b3512;
+    }
+
+    .order-text {
+      width: 100%;
+      min-height: 160px;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .status {
+      display: none;
+      margin-top: 8px;
+      color: var(--ok);
+      font-weight: 900;
+    }
+
+    .status.show { display: block; }
+
+    @media (max-width: 940px) {
+      .hero,
+      .booking,
+      .cards,
+      .service-grid,
+      .fleet-grid,
+      .steps,
+      .split,
+      .faq-grid,
+      .stats,
+      .grid,
+      .vehicle-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy,
+      .hero-panel {
+        padding: 24px;
+        margin: 0;
+      }
+
+      h1 { font-size: 36px; }
+      .summary { position: static; }
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="nav">
+      <div class="brand"><div class="logo">BK</div><span>BookLAXDriver</span></div>
+      <div class="nav-links">
+        <a href="#services">服务</a>
+        <a href="#fleet">车型</a>
+        <a href="#privacy">隐私保障</a>
+        <a href="#booking">预约</a>
+        <button id="installBtn" class="btn gray" type="button" hidden>下载安装到手机桌面</button>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="tag">booklaxdriver.com · 高私密 · 高确定性 · LAX 专属接送</span>
+        <h1>BookLAXDriver 私人司机预约平台</h1>
+        <p>为重视隐私和效率的客户提供 LAX 机场接送、商务会面、夜间出行和加州定制路线。专属司机、全尺寸豪华美系 SUV、百万保险保障；预约前完成定金或信用卡预授权，司机才锁定时间。</p>
+        <div class="hero-actions">
+          <a class="btn gold" href="#booking">立即预约司机</a>
+          <a id="heroWhatsApp" class="btn light" target="_blank" rel="noreferrer">WhatsApp 私密咨询</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>不拼车</strong><span>独立行程，不共享乘客信息</span></div>
+          <div class="stat"><strong>先确认</strong><span>付款/绑卡后再派司机</span></div>
+          <div class="stat"><strong>SUV 车队</strong><span>凯雷德 / 萨博班 / GMC 育空</span></div>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <h2>像 App 一样使用</h2>
+        <p class="small">客户打开网址后，可下载安装到手机主屏幕。无需 App Store 审核，适合先快速上线投广告验证市场。</p>
+        <div class="actions">
+          <a class="btn" href="#booking">开始预约</a>
+          <button id="panelInstallBtn" class="btn gray" type="button">安装到手机桌面</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="cards">
+      <div class="card"><strong>隐私出行</strong><span>无公开拼单、无社交展示，行程只用于派车和服务确认。</span></div>
+      <div class="card"><strong>信用卡保障</strong><span>支持 Stripe 定金、全款或预授权，降低客户跑单风险。</span></div>
+      <div class="card"><strong>专业司机</strong><span>熟悉 LAX 航站楼、酒店、华人区、商务区路线。</span></div>
+      <div class="card"><strong>百万保险</strong><span>商业用车保障，强调安全、可靠、可追踪。</span></div>
+    </section>
+
+    <section id="services" class="site-section">
+      <div class="section-head">
+        <h2>核心服务</h2>
+        <p>先把客户最常见的需求讲清楚，让广告进来的访客不用问太多，就能直接预约。</p>
+      </div>
+      <div class="service-grid">
+        <div class="card"><strong>LAX 机场接送</strong><span>接机、送机、航班跟踪、路边接送、举牌接机、指定隐私接头点。</span></div>
+        <div class="card"><strong>商务与夜间出行</strong><span>安静车内环境，适合会议、约见、夜间安全出行和高私密行程。</span></div>
+        <div class="card"><strong>加州定制路线</strong><span>洛杉矶、尔湾、比佛利山、圣盖博、帕萨迪纳、橙县等路线可预约。</span></div>
+      </div>
+    </section>
+
+    <section id="fleet" class="site-section">
+      <div class="section-head">
+        <h2>豪华美系 SUV 车队</h2>
+        <p>主打全尺寸 SUV，空间大、行李友好、私密性强，更适合机场接送和高端家庭/商务出行。</p>
+      </div>
+      <div class="fleet-grid">
+        <div class="card">
+          <div class="fleet-photo"></div>
+          <strong>凯雷德 Escalade 同级</strong>
+          <span>高端接待、VIP 行程、商务客户首选。</span>
+        </div>
+        <div class="card">
+          <div class="fleet-photo"></div>
+          <strong>萨博班 Suburban 同级</strong>
+          <span>家庭出行、多件行李、长途路线更从容。</span>
+        </div>
+        <div class="card">
+          <div class="fleet-photo"></div>
+          <strong>GMC 育空 Yukon 同级</strong>
+          <span>舒适、宽敞、稳定，适合机场和城市接送。</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy" class="site-section split">
+      <div class="dark-panel">
+        <h2>为什么适合重视隐私的客户</h2>
+        <p>年轻客户更在意效率、私密和确定性。网站预约流程会尽量减少来回沟通，让客户在手机上就能完成路线、时间、车型和付款确认。</p>
+        <ul>
+          <li>不拼车，不公开乘客行程</li>
+          <li>可选择隐私接头点或短信到达后上车</li>
+          <li>司机信息与订单信息用于接送确认</li>
+          <li>通过第三方支付平台处理银行卡信息</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>预约保障机制</h2>
+        <p>客户预约时选择定金、全款或信用卡预授权。这样司机排班更确定，也方便处理临时取消、不到场、等待超时等问题。</p>
+        <p class="small">注意：网站不保存银行卡号。银行卡资料应由 Stripe 等合规支付平台处理。</p>
+        <a class="btn gold" href="#booking">去预约表单</a>
+      </div>
+    </section>
+
+    <section class="site-section">
+      <div class="section-head">
+        <h2>预约流程</h2>
+        <p>流程越清楚，客户越敢下单；司机也更容易按订单执行。</p>
+      </div>
+      <div class="steps">
+        <div class="card step"><strong>选择服务</strong><span>机场接送、点到点、小时包车或定制行程。</span></div>
+        <div class="card step"><strong>填写行程</strong><span>航班号、地址、时间、乘客、行李和隐私需求。</span></div>
+        <div class="card step"><strong>付款/绑卡</strong><span>通过 Stripe 完成定金、预授权或全款确认。</span></div>
+        <div class="card step"><strong>司机确认</strong><span>WhatsApp 私密确认，上车前核对信息。</span></div>
+      </div>
+    </section>
+
+    <h2 id="booking" class="section-title">预约你的专属司机</h2>
+    <section class="booking">
+      <main class="card">
+        <div class="vehicle-grid">
+          <label class="vehicle">
+            <input type="radio" name="vehicle" value="凯雷德 Escalade 同级" data-base="180" data-mile="4.5" checked>
+            <strong>凯雷德同级</strong>
+            <span>VIP / 商务 / 高端接待</span>
+          </label>
+          <label class="vehicle">
+            <input type="radio" name="vehicle" value="萨博班 Suburban 同级" data-base="165" data-mile="4.1">
+            <strong>萨博班同级</strong>
+            <span>家庭 / 多行李 / 长途</span>
+          </label>
+          <label class="vehicle">
+            <input type="radio" name="vehicle" value="GMC 育空 Yukon 同级" data-base="170" data-mile="4.2">
+            <strong>GMC 育空同级</strong>
+            <span>宽敞 / 私密 / 舒适</span>
+          </label>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label for="serviceType">服务类型</label>
+            <select id="serviceType">
+              <option>LAX 机场接机</option>
+              <option>LAX 机场送机</option>
+              <option>私人点到点接送</option>
+              <option>小时包车</option>
+              <option>加州定制行程</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="privacyLevel">隐私需求</label>
+            <select id="privacyLevel">
+              <option>标准私密：不拼车，不公开行程</option>
+              <option>高私密：司机提前沟通暗号/接头点</option>
+              <option>商务私密：安静接送，减少打扰</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="flight">航班号</label>
+            <input id="flight" placeholder="例如：UA123 / CZ327">
+          </div>
+          <div class="field">
+            <label for="pickupSign">接机方式</label>
+            <select id="pickupSign">
+              <option>路边接送</option>
+              <option>举牌接机</option>
+              <option>短信到达后再上车</option>
+              <option>指定隐私接头点</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="pickup">上车地址</label>
+            <input id="pickup" placeholder="例如：LAX Terminal B">
+          </div>
+          <div class="field">
+            <label for="dropoff">下车地址</label>
+            <input id="dropoff" placeholder="例如：Irvine / Beverly Hills / Hotel">
+          </div>
+          <div class="field">
+            <label for="date">日期</label>
+            <input id="date" type="date">
+          </div>
+          <div class="field">
+            <label for="time">时间</label>
+            <input id="time" type="time">
+          </div>
+          <div class="field">
+            <label for="distance">预计距离 / 英里</label>
+            <input id="distance" type="number" min="0" step="1" value="25">
+          </div>
+          <div class="field">
+            <label for="hours">包车小时数</label>
+            <input id="hours" type="number" min="0" step="1" value="0">
+          </div>
+          <div class="field">
+            <label for="passengers">乘客人数</label>
+            <input id="passengers" type="number" min="1" step="1" value="2">
+          </div>
+          <div class="field">
+            <label for="luggage">行李数量</label>
+            <input id="luggage" type="number" min="0" step="1" value="2">
+          </div>
+          <div class="field">
+            <label for="customer">姓名</label>
+            <input id="customer" placeholder="客户姓名">
+          </div>
+          <div class="field">
+            <label for="phone">电话 / WhatsApp</label>
+            <input id="phone" placeholder="+1 000 000 0000">
+          </div>
+          <div class="field">
+            <label for="email">邮箱</label>
+            <input id="email" type="email" placeholder="name@example.com">
+          </div>
+          <div class="field">
+            <label for="paymentMode">预约保障方式</label>
+            <select id="paymentMode">
+              <option value="deposit">先付定金，尾款上车前结清</option>
+              <option value="hold">信用卡预授权，到车后按实际费用扣款</option>
+              <option value="full">提前付全款，司机锁定时间</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="notes">备注</label>
+          <textarea id="notes" placeholder="儿童座椅、特殊行李、接机暗号、是否需要安静行程、是否需要多点停靠等"></textarea>
+        </div>
+
+        <div class="policy">
+          <strong>预约政策</strong>
+          <p>为避免司机空等，客户必须先完成定金支付、全款支付或信用卡预授权后，预约才正式生效。临时取消、不到场、超时等待或信息错误造成司机空跑，可按预约规则收取定金、等待费或空跑费。正式上线前建议让当地律师确认服务条款。</p>
+        </div>
+
+        <label class="check">
+          <input id="agreePolicy" type="checkbox">
+          <span>我同意预约、取消、等待、空跑费用规则，并理解支付信息由 Stripe 等第三方安全处理。</span>
+        </label>
+      </main>
+
+      <aside class="card summary">
+        <div class="price">
+          <div>
+            <span class="badge">预估费用</span>
+            <p class="small">最终价格以确认行程为准</p>
+          </div>
+          <strong id="price">$0</strong>
+        </div>
+        <div class="row"><span>保障方式</span><span id="sumPayment">定金</span></div>
+        <div class="row"><span>车型</span><span id="sumVehicle">凯雷德同级</span></div>
+        <div class="row"><span>隐私</span><span id="sumPrivacy">标准私密</span></div>
+        <div class="row"><span>路线</span><span id="sumRoute">待填写</span></div>
+        <div class="row"><span>时间</span><span id="sumTime">待填写</span></div>
+        <div class="row"><span>人数/行李</span><span id="sumPeople">2 人 / 2 件</span></div>
+        <div class="actions">
+          <a id="stripeBtn" class="btn gold" target="_blank" rel="noreferrer">付款/绑卡后确认预约</a>
+          <a id="whatsappBtn" class="btn" target="_blank" rel="noreferrer">WhatsApp 私密确认</a>
+          <button id="copyBtn" class="btn gray" type="button">复制订单</button>
+        </div>
+        <p class="small">上线时把 Stripe 链接换成你的真实定金/预授权/全款链接，卡号不要由网站自行保存。</p>
+        <div id="copyStatus" class="status">订单已复制</div>
+        <textarea id="orderText" class="order-text" readonly></textarea>
+      </aside>
+    </section>
+
+    <section class="site-section">
+      <div class="section-head">
+        <h2>常见问题</h2>
+        <p>这些内容适合直接放在网站底部，减少客户下单前的犹豫。</p>
+      </div>
+      <div class="faq-grid">
+        <div class="card"><strong>为什么需要先付款或绑定信用卡？</strong><span>司机需要提前预留时间和车辆。定金或预授权可以减少临时跑单、空等和无效预约。</span></div>
+        <div class="card"><strong>我会不会被自动乱扣费？</strong><span>不会。正式费用应按页面政策和实际服务情况处理，支付记录会通过第三方平台留痕。</span></div>
+        <div class="card"><strong>可以指定车型吗？</strong><span>可以选择凯雷德、萨博班、GMC 育空同级车型；最终以确认排班车辆为准。</span></div>
+        <div class="card"><strong>航班延误怎么办？</strong><span>客户填写航班号后，司机可根据实际到达情况沟通调整。长时间等待可能产生等待费。</span></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const CONFIG = {
+      whatsappNumber: "10000000000",
+      stripeDepositLink: "https://buy.stripe.com/REPLACE_WITH_YOUR_DEPOSIT_LINK",
+      stripeHoldLink: "https://buy.stripe.com/REPLACE_WITH_YOUR_CARD_AUTH_LINK",
+      stripeFullPayLink: "https://buy.stripe.com/REPLACE_WITH_YOUR_FULL_PAYMENT_LINK"
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const fields = {
+      vehicle: () => document.querySelector("input[name='vehicle']:checked"),
+      serviceType: $("serviceType"),
+      privacyLevel: $("privacyLevel"),
+      flight: $("flight"),
+      pickupSign: $("pickupSign"),
+      pickup: $("pickup"),
+      dropoff: $("dropoff"),
+      date: $("date"),
+      time: $("time"),
+      distance: $("distance"),
+      hours: $("hours"),
+      passengers: $("passengers"),
+      luggage: $("luggage"),
+      customer: $("customer"),
+      phone: $("phone"),
+      email: $("email"),
+      paymentMode: $("paymentMode"),
+      notes: $("notes"),
+      agreePolicy: $("agreePolicy")
+    };
+
+    const paymentLabels = {
+      deposit: "先付定金",
+      hold: "信用卡预授权",
+      full: "提前付全款"
+    };
+
+    let deferredPrompt = null;
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      deferredPrompt = event;
+      $("installBtn").hidden = false;
+    });
+
+    async function installApp() {
+      if (!deferredPrompt) {
+        alert("如果浏览器没有弹出安装按钮，请用手机浏览器菜单选择“添加到主屏幕”。");
+        return;
+      }
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      $("installBtn").hidden = true;
+    }
+
+    function todayIso() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function value(input, fallback = "待填写") {
+      return input.value.trim() || fallback;
+    }
+
+    function estimatePrice() {
+      const vehicle = fields.vehicle();
+      const base = Number(vehicle.dataset.base);
+      const perMile = Number(vehicle.dataset.mile);
+      const miles = Math.max(0, Number(fields.distance.value) || 0);
+      const hours = Math.max(0, Number(fields.hours.value) || 0);
+      const extraPassengers = Math.max(0, (Number(fields.passengers.value) || 1) - 5) * 15;
+      const privatePickupFee = fields.pickupSign.value.includes("隐私") ? 35 : 0;
+      return Math.round(base + miles * perMile + hours * 95 + extraPassengers + privatePickupFee);
+    }
+
+    function stripeLink() {
+      if (fields.paymentMode.value === "hold") return CONFIG.stripeHoldLink;
+      if (fields.paymentMode.value === "full") return CONFIG.stripeFullPayLink;
+      return CONFIG.stripeDepositLink;
+    }
+
+    function buildOrder() {
+      const route = `${value(fields.pickup)} → ${value(fields.dropoff)}`;
+      const when = `${value(fields.date)} ${value(fields.time, "")}`.trim() || "待填写";
+      const total = estimatePrice();
+      const text = [
+        "【LAX 私人司机预约】",
+        `客户：${value(fields.customer)}`,
+        `电话/WhatsApp：${value(fields.phone)}`,
+        `邮箱：${value(fields.email)}`,
+        `服务类型：${fields.serviceType.value}`,
+        `车型：${fields.vehicle().value}`,
+        `隐私需求：${fields.privacyLevel.value}`,
+        `接机方式：${fields.pickupSign.value}`,
+        `航班号：${value(fields.flight, "未填写")}`,
+        `路线：${route}`,
+        `日期时间：${when}`,
+        `距离/包车：${Number(fields.distance.value) || 0} 英里 / ${Number(fields.hours.value) || 0} 小时`,
+        `乘客/行李：${Number(fields.passengers.value) || 1} 人 / ${Number(fields.luggage.value) || 0} 件`,
+        `预约保障：${paymentLabels[fields.paymentMode.value]}`,
+        `预估费用：$${total}`,
+        `政策确认：${fields.agreePolicy.checked ? "已同意" : "未勾选"}`,
+        `备注：${value(fields.notes, "无")}`
+      ].join("\n");
+      return { route, when, total, text };
+    }
+
+    function render() {
+      const order = buildOrder();
+      $("price").textContent = `$${order.total}`;
+      $("sumPayment").textContent = paymentLabels[fields.paymentMode.value];
+      $("sumVehicle").textContent = fields.vehicle().value;
+      $("sumPrivacy").textContent = fields.privacyLevel.value.split("：")[0];
+      $("sumRoute").textContent = order.route;
+      $("sumTime").textContent = order.when;
+      $("sumPeople").textContent = `${Number(fields.passengers.value) || 1} 人 / ${Number(fields.luggage.value) || 0} 件`;
+      $("orderText").value = order.text;
+      $("stripeBtn").href = stripeLink();
+      $("whatsappBtn").href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(order.text)}`;
+      $("heroWhatsApp").href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent("您好，我想预约 LAX 私人司机接送，想了解隐私行程和付款保障。")}`;
+    }
+
+    async function copyOrder() {
+      await navigator.clipboard.writeText($("orderText").value);
+      $("copyStatus").classList.add("show");
+      setTimeout(() => $("copyStatus").classList.remove("show"), 1800);
+    }
+
+    fields.date.value = todayIso();
+    document.querySelectorAll("input, select, textarea").forEach((node) => {
+      node.addEventListener("input", render);
+      node.addEventListener("change", render);
+    });
+    $("copyBtn").addEventListener("click", copyOrder);
+    $("installBtn").addEventListener("click", installApp);
+    $("panelInstallBtn").addEventListener("click", installApp);
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+
+    render();
+  </script>
+</body>
+</html>

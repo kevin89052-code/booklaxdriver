@@ -1,0 +1,19 @@
+{
+  "name": "BookLAXDriver",
+  "short_name": "BookLAX",
+  "description": "BookLAXDriver 高私密私人司机预约平台，支持 LAX 机场接送、定制行程、付款或绑卡确认预约。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
